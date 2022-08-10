@@ -22,10 +22,23 @@ var SetItems = function (){
         class: 'description',
     }).appendTo(".container");
     }
+    //display image of podcaster, will need to tweak info based off of API infomation 
+    display_image('JavaScript.jpg', 
+                     276, 
+                     110, 
+                     'JavaScriptImage');
 
-    //add picture of podcaster
+    
     //add podcaster info 
     //display content 
+}
+function display_image(src, width, height, alt) {
+    var a = document.createElement("img");
+    a.src = src;
+    a.width = width;
+    a.height = height;
+    a.alt = alt;
+    document.body.appendChild(a);
 }
 
 //GET STORED PREVIOUS USER CONTENT IN LOCAL STORAGE, AND DISPLAY IT 
