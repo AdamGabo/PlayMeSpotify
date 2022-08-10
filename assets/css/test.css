@@ -1,0 +1,14 @@
+.testclass1 {
+  background-color: pink;
+  border: dashed 5px black;
+}
+
+.testclass2 {
+  background-color: darkgoldenrod;
+  border: dashed 2px black;
+}
+
+.testclass3 {
+  background-color: darkgreen;
+  border: dashed 2px black;
+}
