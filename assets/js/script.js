@@ -1,4 +1,4 @@
-for (var j = 0; j < 9; j++)
+for (var j = 0; j < 9; j++) //example for adding divs and content 
 {
 var eventText = $("<div>")
  .addClass("hour")
@@ -8,6 +8,6 @@ var eventText = $("<div>")
  //add input box for event content
  var content = $('<textarea>', {
     id: "input-" + businessHours[j],
-    class: 'col-md-10 description',
+    class: 'description',
 }).appendTo("#event-container-" + businessHours[j]);
 }
