@@ -19,13 +19,23 @@
         <h1 class="title">Podcast Finder</h1>
         <p class="lead">Find any podcast on the Web! With Podcast Finder</p>
     </header>
-    <form class="search-form">
-        <input type="text" placeholder="Search.." name="search">
-        <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
-    </form>
+    <div>
+        <form class="search-form">
+            <input id="searchInput" type="text" placeholder="Search.." name="search">
+            <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+        </form>
+        <div>
+            <ul id="searchResults" class="hidden">
+
+
+            </ul>
+        </div>
+    </div>
     <main class="container">
         <!-- All content goes here via Javacript-->
+        <div id="audioPlayerContainer">
 
+        </div>
 
 
 
