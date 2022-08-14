@@ -1,14 +1,16 @@
-.testclass1 {
-  background-color: pink;
-  border: dashed 5px black;
+.dropdown {
+  cursor: pointer;
+  font-size: 1.5rem;
+  background-color: lightgray;
+  padding: 0 30px 10px 0;
+  width: 78vw;
+  position: relative;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.testclass2 {
-  background-color: darkgoldenrod;
-  border: dashed 2px black;
-}
-
-.testclass3 {
-  background-color: darkgreen;
-  border: dashed 2px black;
+.dropdown:hover {
+  background-color: gray;
 }
