@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -6,27 +7,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/test.css"> <!-- This is for test only remove before deployement-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css"
         integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/test.css">
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+
+    <style id="compiled-css" type="text/css">
+        html,
+        body,
+        #my-map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
     <title>Podcast Finder</title>
 </head>
 
-<body>
+<body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
+    <div id="my-map"></div>
+
+
+
     <header class="jumbotron">
         <h1 class="title">Podcast Finder</h1>
+
         <p class="lead">Find any podcast on the Web! With Podcast Finder</p>
     </header>
     <div>
         <form class="search-form">
             <input id="searchInput" type="text" placeholder="Search.." name="search">
+            <label for="checkbox-radio-option-two" class="pure-radio">
+                <input type="radio" id="checkbox-radio-option-two" name="optionsRadios" value="podcast" checked="" />
+                Podcast
+            </label>
+            <label for="checkbox-radio-option-three" class="pure-radio">
+                <input type="radio" id="checkbox-radio-option-three" name="optionsRadios" value="episode" /> Episode
+            </label>
             <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
         </form>
         <div>
-            <!--conatiner for search results -->
             <ul id="searchResults" class="hidden">
 
 
@@ -35,20 +59,11 @@
     </div>
     <main class="container">
         <!-- All content goes here via Javacript-->
+        <div id="audioPlayerContainer">
 
-        <div id="podcastDisplay">
-            <!-- wrapper container-->
-        </div>
-
-        <div id="episodeDisplay">
-            <!--Wrapper container-->
         </div>
 
 
-
-        <aside id="audioPlayerContainer">
-
-        </aside>
 
     </main>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -58,6 +73,8 @@
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/test.js"></script>
     <!-- Test.js is to be used for testing functions we will remove this before deploying the website-->
+
+
 </body>
 
 </html>
