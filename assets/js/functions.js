@@ -2,7 +2,8 @@
 // Input : 1. Source = A url to the audio file to be loaded. 2. class = The class you want to give to the audio element  3. An element in which to append this player.
 // output : 2. The function will append the audio tag in the element passed as parameter.
 
-function renderAudioPlayer(src, clas = "", audioContainerEl) {
+function renderAudioPlayer(src, clas = "") {
+  let audioContainerEl = document.getElementById("audioPlayerContainer");
   audioContainerEl.innerText = "";
   let player = document.createElement("AUDIO");
   player.src = src;
@@ -17,17 +18,8 @@ function renderAudioPlayer(src, clas = "", audioContainerEl) {
 function searchEventHandler(e) {
   e.preventDefault();
   let searchInput = document.querySelector("#searchInput");
-  var radios = document.getElementsByName("optionsRadios");
-
-  for (var i = 0, length = radios.length; i < length; i++) {
-    if (radios[i].checked) {
-      var typeSelected = radios[i].value;
-      break;
-    }
-  }
-
   clearSearchResult();
-  getSearchResult(searchInput.value, typeSelected);
+  getSearchResult(searchInput.value);
   searchInput.value = "";
 }
 
@@ -43,11 +35,11 @@ function clearSearchResult() {
 
 async function getSearchResult(
   input,
-  type = "podcast",
   offset = "0",
   len_max = "240",
   published_before = moment().unix(),
-  published_after = 0
+  published_after = 0,
+  type = "podcast"
 ) {
   input = encodeURI(input);
   let url = `https://coolspotifyproxy.herokuapp.com/${baseUrl}search?q=${input}&type=${type}&offset=${offset}&len_max=${len_max}&published_before=${published_before}published_after=${published_after}&only_in=title%2Cdescription%2Cauthordescription&language=English&safe_mode=0`;
@@ -60,6 +52,28 @@ async function getSearchResult(
   resultsArr.forEach((result) => {
     renderSearchResult(result, type, searchResultContainerEl);
   });
+}
+
+// Need to add comments-------
+
+function renderSearchResult(json, type, dropdownContainerEl) {
+  let data = parseSearchData(json);
+  dropdownContainerEl.classList = "visible";
+
+  var resultEl = document.createElement("li");
+  resultEl.setAttribute("class", "dropdown result");
+  if (type === "podcast") {
+    resultEl.setAttribute("data-podcastId", `${data.podcastId}`);
+    resultEl.innerHTML = `
+    <span>podcast Thumbnail:- <img width="150px" height="150px" src=${data.podcastThumbnail}></span>
+    <span>Podcast title:- ${data.podcastTitle}</span>
+    <span>Podcast Listen Score:- ${data.podcastListenScore}</span>
+    <span>Podcast Publisher:- ${data.podcastPublisher}</span>
+    <span>Podcast Global Rank:- ${data.podcastGlobalRank}</span>
+  `;
+    dropdownContainerEl.appendChild(resultEl);
+    dropdownContainerEl.addEventListener("click", updatePodcastDisplay);
+  }
 }
 
 // Need to add comments------
@@ -75,6 +89,7 @@ function parseSearchData(json) {
     episodeDescription: json.description_highlighted,
 
     podcastListenScore: json.podcast.listen_score,
+    podcastGlobalRank: json.podcast.listen_score_global_rank,
     podcastId: json.podcast.id,
     podcastImage: json.podcast.image,
     podcastThumbnail: json.podcast.thumbnail,
@@ -84,3 +99,33 @@ function parseSearchData(json) {
 
   return dataarr;
 }
+
+//
+// Functions to set html skeleton
+//
+
+function htmlSkeletonPodcast() {
+  let wrapperContainerEl = document.getElementById("podcastDisplay");
+  wrapperContainerEl.innerHTML = `
+  <section>
+  <!-- container to display the data for a particular podcast-->
+  <h1>Test</h1>
+  <article>
+      <!-- container for podcast description -->
+
+  </article>
+  <article>
+      <!-- container for episode lists -->
+
+  </article>
+  <aside>
+      <!-- container for Podcast image-->
+
+  </aside>
+</section>
+  `;
+}
+
+//
+// END Functions to set html skeleton
+//
