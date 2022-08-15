@@ -1,9 +1,54 @@
+body {
+  background-color: blanchedalmond;
+}
+
+header {
+  background-image: linear-gradient(to right bottom, #82b9f7, #0f5bb2, #82b9f7);
+  color: whitesmoke;
+}
+
+main {
+  background-color: darkcyan;
+  height: 100vh;
+}
+aside {
+  background-color: darkgray;
+}
+
+section {
+  background-color: chocolate;
+}
+
+form {
+  background-color: blueviolet;
+}
+
+input {
+  background-color: chartreuse;
+}
+button {
+  background-color: crimson;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+.internalDiv {
+  border: dashed 1px black;
+  background-color: rgba(240, 248, 255, 0.711);
+}
+
 .dropdown {
   cursor: pointer;
   font-size: 1.5rem;
   background-color: lightgray;
   padding: 0 30px 10px 0;
-  width: 78vw;
+  width: 70vw;
   position: relative;
   z-index: 99;
   display: flex;
