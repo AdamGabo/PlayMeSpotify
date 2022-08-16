@@ -137,3 +137,8 @@ body {
 .clear-button:hover {
   color: rgba(0, 0, 0, 0.6);
 }
+#reset-button{
+  border-radius: 30%;
+  color: rgba(0, 0, 0, 0.6);
+  background-color:rgba(186, 63, 29, 0.667)
+}

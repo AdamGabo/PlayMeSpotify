@@ -3,6 +3,8 @@
 //GEOPIFY API CALLS, MULTIPLE APIs FROM THE "GEOAPIFY FAMILY" HAVE BEEN USED IN THE APPLICATION, STANDARD CODE (AS DEFINED IN THE API DOCUMENTATION) FOR THE SEARCH BAR HAS BEEN UTILIZED 
 //GLOBAL VARIABLE FOR THE MAP 
 var map; 
+var mapMarkers = []; 
+var routes = []; 
 //GET THE DEFAULT LOCATION OF THE MAP FROM LOCAL STORAGE (PREVIOUS DATA ENTRY) OR FROM IP ADDRESS LOCATION (DEFAULT FOR COUNTY - PERMISSION FROM WEB BROWSER NOT NEEDED)
 function getIPAddressLocation() {
     $.getJSON('https://geolocation-db.com/json/')
@@ -14,16 +16,22 @@ function getIPAddressLocation() {
             if (localStorage.getItem("Previous Address"))
             {
             var oldData = (localStorage.getItem("Previous Address")); 
-            getSearchResultGeo(oldData.properties.long, oldData.properties.lat)
-            showMap(oldData.properties.lat,oldData.properties.long); 
-
+            oldData = JSON.parse(oldData);
+            if (oldData.lon && oldData.lat)
+            {
+            getSearchResultGeo(oldData.lon, oldData.lat)
+            showMap(oldData.lat,oldData.lon); 
+            displayHomeMarkerLocalStorage(oldData); 
             }
             else 
             {
                 showMap(lat,long); 
             }
-            
-            
+            }
+            else 
+            {
+                showMap(lat,long); 
+            }
          });
 }
 //INTIALIZE THE MAP AND GATHER THE RASTER IMAGES FROM LEAFLET 
@@ -49,6 +57,8 @@ function showMap(lat,long){
     maxZoom: 20,
     id: "osm-bright",
   }).addTo(map); 
+
+  clearMapMarkersRoutes(); 
 }
 
 //MAKE REQUEST TO GET ALL THE LOCATIONS IN A 5000m RADIUS OF THE DESIRED LOCATION
@@ -56,7 +66,7 @@ async function getSearchResultGeo(long, lat)
 {
     $(document).ready(function () {
         $.ajax({
-            url: `https://api.geoapify.com/v2/places?categories=leisure.park&conditions=named&filter=circle:${long},${lat},5000&bias=proximity:${long},${lat}&lang=en&limit=1&apiKey=1072fcb061a849c28775a0714807e737`,
+            url: `https://api.geoapify.com/v2/places?categories=leisure.park&conditions=named&filter=circle:${long},${lat},5000&bias=proximity:${long},${lat}&lang=en&limit=5&apiKey=1072fcb061a849c28775a0714807e737`,
             type: "GET", 
             success: function (result) {
                 console.log(result);
@@ -78,7 +88,7 @@ function displayMarkers(results) {
         iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
         popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
       });
-    //FOR LOOP WHICH GOES THROUGH ALL THE PARKS IN THE AREA 
+    //FOR LOOP WHICH GOES THROUGH ALL THE PARKS IN THE AREA, ADDED CLICK EVENT FEATURE ADDED 
     for (var i=0; i < results.features.length; i++)
     {
         var geoLong = results.features[i].properties.lon; 
@@ -86,10 +96,50 @@ function displayMarkers(results) {
 
         var markerPopup = L.popup().setContent(results.features[i].properties.address_line1 + ", " + results.features[i].properties.address_line2); 
         var marker = L.marker([geoLat,geoLong], {
-        icon: markerIcon
-    }).bindPopup(markerPopup).addTo(map);
+        icon: markerIcon, 
+        data: results.features[i] 
+    }).bindPopup(markerPopup).addTo(map).on('dblclick', ondblClick);
+    mapMarkers.push(marker); 
     }
 }
+function displayHomeMarker(results) {
+
+    var markerIcon = L.icon({
+        iconUrl: `https://api.geoapify.com/v1/icon?type=awesome&color=%2315d4eb&icon=lightbulb&apiKey=${geoapifyAPIKey}`,
+        iconSize: [31, 46], // size of the icon
+        iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+        popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
+      });
+    //FOR LOOP WHICH GOES THROUGH ALL THE PARKS IN THE AREA, ADDED CLICK EVENT FEATURE ADDED 
+    
+        var geoLong = results.properties.lon; 
+        var geoLat = results.properties.lat; 
+
+        var markerPopup = L.popup().setContent(results.properties.address_line1 + ", " + results.properties.address_line2); 
+        var marker = L.marker([geoLat,geoLong], {
+        icon: markerIcon, 
+    }).bindPopup(markerPopup).addTo(map);
+    mapMarkers.push(marker); 
+    }
+    function displayHomeMarkerLocalStorage(results) {
+    
+        var markerIcon = L.icon({
+            iconUrl: `https://api.geoapify.com/v1/icon?type=awesome&color=%2315d4eb&icon=lightbulb&apiKey=${geoapifyAPIKey}`,
+            iconSize: [31, 46], // size of the icon
+            iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
+          });
+        //FOR LOOP WHICH GOES THROUGH ALL THE PARKS IN THE AREA, ADDED CLICK EVENT FEATURE ADDED 
+        
+            var geoLong = results.lon; 
+            var geoLat = results.lat; 
+    
+            var markerPopup = L.popup().setContent(results.address); 
+            var marker = L.marker([geoLat,geoLong], {
+            icon: markerIcon, 
+        }).bindPopup(markerPopup).addTo(map);
+        mapMarkers.push(marker); 
+        }
 //CREATE SEARCH BAR FOR USER AFTER DEFAULT HAS BEEN SET, STANDARD GEOAPIFY API CODE HAS BEEN USED FOR THIS FEATURE source:https://apidocs.geoapify.com/samples/autocomplete/autocomplete-tutorial/#step-1, MODIFCATIONS WERE MADE TO FIT OUR APPLICATION 
 /* 
 	The addressAutocomplete takes as parameters:
@@ -298,317 +348,165 @@ function addressAutocomplete(containerElement, callback, options) {
     console.log(data);
 
     //LOAD IN MARKERS FROM SEARCH RESULT
+    if (mapMarkers)
+        clearMapMarkersRoutes(); 
+
     getSearchResultGeo(data.properties.lon, data.properties.lat); 
     //MOVE MAP TO DESIRED LOCATION
     map.setView([data.properties.lat, data.properties.lon], 14)
-    localStorage.setItem("Previous Address", data.properties);
+    if (data)
+    {
+        displayHomeMarker(data); 
+        var inputData = {
+            lat: data.properties.lat,
+            lon: data.properties.lon,
+            address: data.properties.formatted
+        };
+    localStorage.setItem("Previous Address", JSON.stringify(inputData));
+    }
 
   }, {
       placeholder: "Enter an address here"
   });
 
-//ROUTING FEATURE
+//ROUTING FEATURE, ADDS ROUTES BETWEEN TWO DESTINATION ON AN ICON DOUBLE CLICK 
 
-//CLICK EVENT
-
-async function getRoutingResultGeo(destinationData,userLocationData)
+//MAKE API CALL FOR ROUTE source:https://apidocs.geoapify.com/docs/routing/#code-samples
+async function getRoutingResultsGeo(destinationData,userLocationData)
 {
+    var fromWaypoint = [userLocationData.lat, userLocationData.lon]; // latutude, longitude
+    var toWaypoint = [destinationData.lat, destinationData.lon]; // latitude, longitude
+    var routingUrl = `https://api.geoapify.com/v1/routing?waypoints=${fromWaypoint.join(',')}|${toWaypoint.join(',')}&mode=drive&details=instruction_details&apiKey=${geoapifyAPIKey}`;
 
-    var dLon = destinationData.properties.lon; 
-    var dLat = destinationData.properties.lat; 
-
-    var uLon = userLocationData.properties.lon;
-    var uLat = userLocationData.properties.lat;
-
-    $(document).ready(function () {
-        $.ajax({
-            url: `https://api.geoapify.com/v1/routing?waypoints=${dLat},${dLon}|${uLat},${uLon}&mode=drive&lang=en&details=instruction_details&apiKey=${geoapifyAPIKey}`,
-            type: "GET", 
-            success: function (result) {
-                console.log(result);
-                results = result; 
-                displayMarkers(results);
-            }, 
-            error: function (error) {
-                console.log(error); 
-            }
-        })
-})  
+    fetch(routingUrl).then(res => res.json()).then(result => {
+    console.log(result);
+    if (result)
+    localStorage.setItem("Route-Data", JSON.stringify(result)); 
+    //ADD ROUTE TO MAP 
+    addRouteToMap(result); 
+}, error => console.log(err));
 }
+//ADD ROUTE TO MAP AS PER API DOCUMENTATION source: https://apidocs.geoapify.com/docs/routing/#routing
+function addRouteToMap(routeResult)
+{
+    var route = L.geoJSON(routeResult, {
+    style: (feature) => {
+        return {
+        color: "rgba(20, 137, 255, 0.7)",
+        weight: 5
+        };
+    }
+    }).bindPopup((layer) => {
+    return `${layer.feature.properties.distance} ${layer.feature.properties.distance_units}, ${layer.feature.properties.time}`
+    }).addTo(map);
+    if (route)
+    routes.push(route); 
 
-  // The API Key provided is restricted to JSFiddle website
-// Get your own API Key on https://myprojects.geoapify.com
-var myAPIKey = "6dc7fb95a3b246cfa0f3bcef5ce9ed9a";
-
-const map = new maplibregl.Map({
-  container: 'my-map',
-  style: `https://maps.geoapify.com/v1/styles/klokantech-basic/style.json?apiKey=${myAPIKey}`,
-  center: [-72.79419772520356, 44.53361448499783],
-  zoom: 14
-});
-map.addControl(new maplibregl.NavigationControl());
-
-const popup = new maplibregl.Popup();
-
-// calculate and display routing:
-// from 38.937165,-77.045590 (1208 Hourglass Drive, Stowe, VT 05672, United States of America)
-const fromWaypoint = [-72.78056761690857, 44.53000255267429]; // longitude, latutude
-const fromWaypointMarker = new maplibregl.Marker().setLngLat(fromWaypoint)
-  .setPopup(new maplibregl.Popup().setText(
-    '1208 Hourglass Drive, Stowe, VT 05672, United States of America'
-  )).addTo(map);
-
-
-// to 38.881152,-76.990693 (Switchback, Stowe, VT 05672-5111, United States of America)
-const toWaypoint = [-72.80797096598127, 44.536552001130076]; // longitude, latutude
-const toWaypointMarker = new maplibregl.Marker().setLngLat(toWaypoint)
-  .setPopup(new maplibregl.Popup().setText(
-    'Switchback, Stowe, VT 05672-5111, United States of America'
-  )).addTo(map);
-
-let routeData;
-let routeStepsData;
-let instructionsData;
-let stepPointsData;
-
-fetch(`https://api.geoapify.com/v1/routing?waypoints=lonlat:${fromWaypoint.join(",")}|lonlat:${toWaypoint.join(",")}&mode=hike&details=route_details,elevation&apiKey=${myAPIKey}`).then(res => res.json()).then(routeResult => {
-  routeData = routeResult;
-  const steps = [];
-  const instructions = [];
-  const stepPoints = [];
-
-  routeData.features[0].properties.legs.forEach((leg, legIndex) => {
-    const legGeometry = routeData.features[0].geometry.coordinates[legIndex];
-    leg.steps.forEach((step, index) => {
-      if (step.instruction) {
-        instructions.push({
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": legGeometry[step.from_index]
-          },
-          properties: {
-          	text: step.instruction.text
-          }
-        });
-      }
-
-      if (index !== 0) {
-        stepPoints.push({
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": legGeometry[step.from_index]
-          },
-          properties: step
-        })
-      }
-
-      if (step.from_index === step.to_index) {
-        // destination point
-        return;
-      }
-
-      const stepGeometry = legGeometry.slice(step.from_index, step.to_index + 1);
-      steps.push({
+    const turnByTurns = []; // collect all transitions
+    routeResult.features.forEach(feature => feature.properties.legs.forEach((leg, legIndex) => leg.steps.forEach(step => {
+    const pointFeature = {
         "type": "Feature",
         "geometry": {
-          "type": "LineString",
-          "coordinates": stepGeometry
+        "type": "Point",
+        "coordinates": feature.geometry.coordinates[legIndex][step.from_index]
         },
-        properties: step
-      });
-    });
-  });
-
-  routeStepsData = {
-    type: "FeatureCollection",
-    features: steps
-  }
-
-  instructionsData = {
-    type: "FeatureCollection",
-    features: instructions
-  }
-
-  stepPointsData = {
-    type: "FeatureCollection",
-    features: stepPoints
-  }
-
-  map.addSource('route', {
-    type: 'geojson',
-    data: routeData
-  });
-  
-  map.addSource('points', {
-    type: 'geojson',
-    data: instructionsData
-  });
-  
- 	addLayerEvents();
-  drawRoute();
-}, err => console.log(err));
-
-function drawRoute() {
-  if (!routeData) {
-    return;
-  }
-
-  if (map.getLayer('route-layer')) {
-    map.removeLayer('route-layer')
-  }
-  
-  if (map.getLayer('points-layer')) {
-  	map.removeLayer('points-layer')
-  }
-
-  if (document.getElementById("showDetails").checked) {
-    map.getSource('route').setData(routeStepsData);
-    map.addLayer({
-      'id': 'route-layer',
-      'type': 'line',
-      'source': 'route',
-      'layout': {
-        'line-join': "round",
-        'line-cap': "round"
-      },
-      'paint': {
-        'line-color': [
-          'match',
-          ['get', 'road_class'],
-          'motorway',
-          '#009933',
-          'trunk',
-          '#00cc99',
-          'primary',
-          '#009999',
-          'secondary',
-          '#00ccff',
-          'tertiary',
-          '#9999ff',
-          'residential',
-          '#9933ff',
-          'service_other',
-          '#ffcc66',
-          'unclassified',
-          '#666699',
-          /* other */
-          '#666699'
-        ],
-        'line-width': 8
-      }
-    });
-    
-    map.getSource('points').setData(stepPointsData);
-    map.addLayer({
-      'id': 'points-layer',
-      'type': 'circle',
-      'source': 'points',
-      'paint': {
-        'circle-radius': 4,
-        'circle-color': "#ddd",
-        'circle-stroke-color': "#aaa",
-        'circle-stroke-width': 1,
-      }
-    });
-  } else {
-    map.getSource('route').setData(routeData);
-    map.addLayer({
-      'id': 'route-layer',
-      'type': 'line',
-      'source': 'route',
-      'layout': {
-        'line-cap': "round",
-        'line-join': "round"
-      },
-      'paint': {
-        'line-color': "#6084eb",
-        'line-width': 8
-      },
-      'filter': ['==', '$type', 'LineString']
-    });
-    
-    map.getSource('points').setData(instructionsData);
-    map.addLayer({
-      'id': 'points-layer',
-      'type': 'circle',
-      'source': 'points',
-      'paint': {
-        'circle-radius': 4,
-        'circle-color': "#fff",
-        'circle-stroke-color': "#aaa",
-        'circle-stroke-width': 1,
-      }
-    });
-  }
-}
-
-function addLayerEvents() {
-  map.on('mouseenter', 'route-layer', () => {
-  	map.getCanvas().style.cursor = 'pointer';
-  });
-
-  map.on('mouseleave', 'route-layer', () => {
-  	map.getCanvas().style.cursor = '';
-  });
-  
-  map.on('mouseenter', 'points-layer', () => {
-  	map.getCanvas().style.cursor = 'pointer';
-  });
-
-  map.on('mouseleave', 'points-layer', () => {
-  	map.getCanvas().style.cursor = '';
-  });
-  
-  map.on('click', 'route-layer', (e) => { 
-  	if (document.getElementById("showDetails").checked) {   
-     	const stepData = e.features[0].properties;
-    	const propertiesToShow = ["surface", "elevation", "elevation_gain"];
-      const dataToShow = {};
-      propertiesToShow.forEach(property => {
-      	if (stepData[property] || stepData[property] === 0) {
-        	dataToShow[property] = stepData[property];
+        "properties": {
+        "instruction": step.instruction.text
         }
-      });
-      
-      showPopup(dataToShow, e.lngLat);
-    } else {
-    	showPopup({
-      	distance: `${e.features[0].properties.distance} m`,
-        time: `${e.features[0].properties.time} s`
-      }, e.lngLat);      
     }
-    e.preventDefault();
-  })
+    turnByTurns.push(pointFeature);
+    })));
 
-  map.on('click', 'points-layer', (e) => {
-  	const properties = e.features[0].properties;
-   	const point = e.features[0].geometry.coordinates;
+    L.geoJSON({
+    type: "FeatureCollection",
+    features: turnByTurns
+    }, {
+    pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, turnByTurnMarkerStyle);
+    }
+    }).bindPopup((layer) => {
+    return `${layer.feature.properties.instruction}`
+    }).addTo(map);
+    // if (layer)
+    // mapMarkers.push(layer); 
+}
+//DISPLAY ROUTE MARKERS 
+function displayRoutingMarkers(destinationData,userLocationData) {
     
-    if (properties.text) {
-    	popup.setText(properties.text);
-      popup.setLngLat(point);
-      popup.addTo(map);
-      e.preventDefault();
+    for(var i =0; i<2; i++)
+    {
+        var data; 
+        var icon; 
+        var color;
+        if (i === 0)
+        {
+            data = destinationData; 
+            color = "%2332e713";
+            icon = "tree";
+
+        }
+        else 
+        {
+            data = userLocationData; 
+            color = "%2315d4eb"; 
+            icon = "lightbulb";
+        }
+
+        var markerIcon = L.icon({
+            iconUrl: `https://api.geoapify.com/v1/icon?type=awesome&color=${color}&icon=${icon}&apiKey=${geoapifyAPIKey}`,
+            iconSize: [31, 46], // size of the icon
+            iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
+          });
+        var markerPopup = L.popup().setContent(data.address); 
+        var marker = L.marker([data.lat,data.lon], {
+        icon: markerIcon
+    }).bindPopup(markerPopup).addTo(map);
+    if (marker)
+    mapMarkers.push(marker); 
     }
+}
+//CLICK EVENT FOR ROUTING WHEN MARKER IS DOUBLE CLICKED
+function ondblClick(e) {
+    clearMapMarkersRoutes(); 
+    //CLEAR MAP MARKERS/ROUTE LAYERS 
+    if (map.mapMarkers)
+        map.markers.clearLayers();
+    console.log(e.latlng);
+    var inputData = {
+        lat: e.latlng.lat,
+        lon: e.latlng.lng,
+        address: "Destination"
+    };
+    var destinationData= inputData; 
+    var userLocationData = localStorage.getItem("Previous Address");
+    userLocationData = JSON.parse(userLocationData); 
+    displayRoutingMarkers(destinationData,userLocationData); 
+    getRoutingResultsGeo(destinationData,userLocationData); 
+}
+//CLEAR THE MAP FUNCTION 
+function clearMapMarkersRoutes()
+{
+    if (mapMarkers.length > 0)
+    {
+        for(var i = 0; i < mapMarkers.length; i++){
+            map.removeLayer(mapMarkers[i]);
+        }
+    }
+    if (routes.length > 0)
+    {
+        for(var i = 0; i < routes.length; i++){
+            map.removeControl(routes[i]);
+        }
+    }
+    
+}
+//RESET BUTTON FEATURE TO CLEAR CONTENTS 
+$( "#reset-button" ).click(function() {
+    clearMapMarkersRoutes(); 
   });
-}
 
-
-function showPopup(data, lngLat) {
-	let popupHtml = Object.keys(data).map(key => {
-  	return `<div class="popup-property-container">
-    					<span class="popup-property-label">${key}: </span>
-              <span class="popup-property-value">${data[key]}</span>
-            </div>`
-  }).join(''); 
-   
- 	popup.setLngLat(lngLat).setHTML(popupHtml).addTo(map);
-}
-
-  
 //FIRST INTIALIZATION FOR MAP API FEATURE
 getIPAddressLocation();
 
-//POTENTIAL UPGRADES FOR FUTURE ITEMS 
+
