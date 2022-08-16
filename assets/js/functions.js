@@ -65,7 +65,8 @@ function renderSearchResult(json, type, dropdownContainerEl) {
   if (type === "podcast") {
     resultEl.setAttribute("data-podcastid", `${data.podcastId}`);
     resultEl.innerHTML = `
-    <span>podcast Thumbnail:- <img width="150px" height="150px" src=${data.podcastThumbnail}></span>
+    <span>podcast Thumbnail:- </span>
+    <img width="150px" height="150px" src=${data.podcastThumbnail}>
     <span>Podcast title:- ${data.podcastTitle}</span>
     <span>Podcast Listen Score:- ${data.podcastListenScore}</span>
     <span>Podcast Publisher:- ${data.podcastPublisher}</span>
@@ -75,6 +76,96 @@ function renderSearchResult(json, type, dropdownContainerEl) {
     dropdownContainerEl.addEventListener("click", updatePodcastDisplay);
   }
 }
+
+// Need to add comments-----
+
+function updatePodcastDisplay(e) {
+  var optionSelected = e.target;
+
+  if (optionSelected.matches(".result")) {
+    htmlSkeletonPodcast();
+    let podcastId = optionSelected.dataset.podcastid;
+    getPodcastDetails(podcastId);
+    clearSearchResult();
+  } else {
+    let parentEl = optionSelected.parentElement;
+    if (parentEl.matches(".result")) {
+      htmlSkeletonPodcast();
+      let podcastId = parentEl.dataset.podcastid;
+      console.log(podcastId);
+      getPodcastDetails(podcastId);
+      clearSearchResult();
+    }
+  }
+}
+
+// Need to add comments------
+
+async function getPodcastDetails(podcastId, nextEpDate = "") {
+  let url = `${proxyUrl}${baseUrl}podcasts/${podcastId}?next_episode_pub_date=${nextEpDate}&sort=recent_first`;
+
+  let response = await fetch(url);
+  let json = await response.json();
+
+  renderPodcastDisplay(json);
+  renderEpisodeList(json);
+  console.log("response json", json);
+}
+
+// Need to add comments------
+function renderPodcastDisplay(json) {
+  document.getElementById("podInfo").innerHTML = `
+  <article class="podInfo" >
+    <h2>Description</h2>
+    <p>${json.description}</p>
+<h2>Country</h2>
+<p>${json.country}</p>
+<h2>Publiser</h2>
+<p>${json.publisher}</p>
+<h2>Total Episodes</h2>
+<p>${json.total_episodes}</p>
+</article>
+  `;
+  let imageContainer = document.getElementById("podImg");
+  imageContainer.innerHTML = `
+  <img class="podImage" src="${json.image}" alt="">
+  `;
+  document.getElementById("podTitle").innerText = json.title;
+}
+// Need to add comments------
+function renderEpisodeList(json) {
+  let epListContainer = document.getElementById("epList");
+  let episodeListArr = json.episodes;
+
+  console.log("use this to render episodes list", episodeListArr);
+  episodeListArr.forEach((episode) => {
+    let formattedLength = moment
+      .utc(1000 * episode.audio_length_sec)
+      .format("HH:mm:ss");
+    let episodeLiEl = document.createElement("li");
+    episodeLiEl.setAttribute("class", "");
+
+    episodeLiEl.innerHTML = `
+    <img class="playBtn" data-audiourl="${episode.audio}" src="./assets/image1/play-button-icon-png-18905.png" alt="">
+    <span>Title:->${episode.title}</span>
+    <img src="${episode.image}" alt=""> 
+    <span><h3>Description</h3>${episode.description}</span>
+    <span><h3>Episode Length</h3>${formattedLength}</span>
+`;
+    epListContainer.appendChild(episodeLiEl);
+  });
+  epListContainer.addEventListener("click", playEpisode);
+}
+// Need to add comments------
+function playEpisode(e) {
+  var optionSelected = e.target;
+  if (optionSelected.matches(".playBtn")) {
+    console.log("audio Played");
+    let audioUrl = optionSelected.dataset.audiourl;
+    renderAudioPlayer(audioUrl);
+  }
+}
+// Need to add comments------
 
 // Need to add comments------
 
@@ -96,7 +187,6 @@ function parseSearchData(json) {
     podcastTitle: json.podcast.title_original,
     podcastPublisher: json.podcast.publisher_original,
   };
-
   return dataarr;
 }
 
@@ -110,18 +200,20 @@ function htmlSkeletonPodcast() {
   <section>
   <!-- container to display the data for a particular podcast-->
   <h1 id="podTitle"></h1>
-  <article id="podDesc">
+  <section id="podInfo">
       <!-- container for podcast description -->
 
-  </article>
-  <article>
-      <!-- container for episode lists -->
-
-  </article>
+  </section>
+  
   <aside id="podImg">
       <!-- container for Podcast image-->
 
   </aside>
+  <section >
+      <!-- container for episode lists -->
+      <ul id="epList">
+      </ul>
+  </section>
 </section>
   `;
 }

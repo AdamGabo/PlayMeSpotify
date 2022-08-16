@@ -16,7 +16,8 @@ aside {
 }
 
 section {
-  background-color: chocolate;
+  background-color: burlywood;
+  font-size: larger;
 }
 
 form {
@@ -28,6 +29,10 @@ input {
 }
 button {
   background-color: crimson;
+}
+img {
+  height: 100px;
+  width: 100px;
 }
 
 .hidden {
