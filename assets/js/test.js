@@ -31,26 +31,54 @@
 
 //
 //
-async function updatePodcastDisplay(e) {
+function updatePodcastDisplay(e) {
   var optionSelected = e.target;
   if (optionSelected.matches(".result")) {
     htmlSkeletonPodcast();
-    let podcastId = optionSelected.dataset.podcastId;
-    console.log("do something with the podcast ID to display it");
+    let podcastId = optionSelected.dataset.podcastid;
+    getPodcastDetails(podcastId);
+
     clearSearchResult();
   }
 }
+
+async function getPodcastDetails(podcastId, nextEpDate = "") {
+  let url = `${proxyUrl}${baseUrl}podcasts/${podcastId}?next_episode_pub_date=${nextEpDate}&sort=recent_first`;
+
+  let response = await fetch(url);
+  let json = await response.json();
+
+  renderPodcastDisplay(json);
+  renderEpisodeList(json);
+  console.log("response json", json);
+}
+
+function renderPodcastDisplay(json) {
+  document.getElementById("podDesc").innerText = json.description;
+  let imageContainer = document.getElementById("podImg");
+  imageContainer.innerHTML = `
+  <img class="podImage" src="${json.image}" alt="">
+  `;
+  document.getElementById("podTitle").innerText = json.title;
+
+  console.log("use this to render podcast details ");
+}
+
+function renderEpisodeList(json) {
+  console.log("use this to render episodes");
+}
+
 //
 //
 
-function playSelectedEpisode(e) {
-  var optionSelected = e.target;
-  if (optionSelected.matches(".result")) {
-    let audioURL = optionSelected.dataset.audiourl;
-    renderAudioPlayer(audioURL, "");
-    clearSearchResult();
-  }
-}
+// function playSelectedEpisode(e) {
+//   var optionSelected = e.target;
+//   if (optionSelected.matches(".result")) {
+//     let audioURL = optionSelected.dataset.audiourl;
+//     renderAudioPlayer(audioURL, "");
+//     clearSearchResult();
+//   }
+// }
 
 //
 //

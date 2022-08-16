@@ -42,7 +42,7 @@ async function getSearchResult(
   type = "podcast"
 ) {
   input = encodeURI(input);
-  let url = `https://coolspotifyproxy.herokuapp.com/${baseUrl}search?q=${input}&type=${type}&offset=${offset}&len_max=${len_max}&published_before=${published_before}published_after=${published_after}&only_in=title%2Cdescription%2Cauthordescription&language=English&safe_mode=0`;
+  let url = `${proxyUrl}${baseUrl}search?q=${input}&type=${type}&offset=${offset}&len_max=${len_max}&published_before=${published_before}published_after=${published_after}&only_in=title%2Cdescription%2Cauthordescription&language=English&safe_mode=0`;
 
   let response = await fetch(url);
   let json = await response.json();
@@ -63,7 +63,7 @@ function renderSearchResult(json, type, dropdownContainerEl) {
   var resultEl = document.createElement("li");
   resultEl.setAttribute("class", "dropdown result");
   if (type === "podcast") {
-    resultEl.setAttribute("data-podcastId", `${data.podcastId}`);
+    resultEl.setAttribute("data-podcastid", `${data.podcastId}`);
     resultEl.innerHTML = `
     <span>podcast Thumbnail:- <img width="150px" height="150px" src=${data.podcastThumbnail}></span>
     <span>Podcast title:- ${data.podcastTitle}</span>
@@ -109,8 +109,8 @@ function htmlSkeletonPodcast() {
   wrapperContainerEl.innerHTML = `
   <section>
   <!-- container to display the data for a particular podcast-->
-  <h1>Test</h1>
-  <article>
+  <h1 id="podTitle"></h1>
+  <article id="podDesc">
       <!-- container for podcast description -->
 
   </article>
@@ -118,7 +118,7 @@ function htmlSkeletonPodcast() {
       <!-- container for episode lists -->
 
   </article>
-  <aside>
+  <aside id="podImg">
       <!-- container for Podcast image-->
 
   </aside>

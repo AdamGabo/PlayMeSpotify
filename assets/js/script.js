@@ -6,6 +6,7 @@ var searchOptionsArray = [];
 var podcasterContentListenAPI = [];
 var podcasterContentWikipedia = [];
 const baseUrl = "https://listen-api-test.listennotes.com/api/v2/"; //This is mock server url change it to actual url before deploying to production//
+const proxyUrl = "https://coolspotifyproxy.herokuapp.com/";
 const geoapifyAPIKey = "1072fcb061a849c28775a0714807e737"; // API for geopify API
 //
 // Event listeners

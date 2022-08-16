@@ -59,3 +59,8 @@ button {
 .dropdown:hover {
   background-color: gray;
 }
+
+.podImage {
+  height: 150px;
+  width: 150px;
+}
