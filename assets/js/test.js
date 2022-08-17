@@ -12,7 +12,7 @@
 //
 
 //
-<<<<<<< HEAD
+
 // Adam's Code Below
 //
 //
@@ -67,7 +67,7 @@ L.tileLayer(isRetina ? retinaUrl : GeoUrl, {
 getLocation();
 
 // if statement that filetes out location requests https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-=======
+
 //
 //
 // if (type === "episode") {
@@ -107,4 +107,3 @@ function playSelectedEpisode(e) {
     clearSearchResult();
   }
 }
->>>>>>> main
