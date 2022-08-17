@@ -16,7 +16,8 @@ aside {
 }
 
 section {
-  background-color: chocolate;
+  background-color: burlywood;
+  font-size: larger;
 }
 
 form {
@@ -28,6 +29,10 @@ input {
 }
 button {
   background-color: crimson;
+}
+img {
+  height: 100px;
+  width: 100px;
 }
 
 .hidden {
@@ -60,6 +65,10 @@ button {
   background-color: gray;
 }
 
+.podImage {
+  height: 150px;
+  width: 150px;
+}
 
 /*GEOAPIFY API STANDARD CODE HAS BEEN USED FOR THE CSS source: https://apidocs.geoapify.com/samples/autocomplete/autocomplete-tutorial/#step-1*/
 body {
@@ -70,7 +79,7 @@ body {
 .autocomplete-container {
   /*the container must be positioned relative:*/
   position: relative;
-  
+
   margin-bottom: 20px;
   z-index: 999;
 }
@@ -78,7 +87,7 @@ body {
 .autocomplete-container input {
   width: calc(100% - 43px);
   outline: none;
-  
+
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 10px;
   padding-right: 31px;
@@ -96,7 +105,7 @@ body {
   top: calc(100% + 2px);
   left: 0;
   right: 0;
-  
+
   background-color: #fff;
 }
 
@@ -119,7 +128,7 @@ body {
 .clear-button {
   color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
-  
+
   position: absolute;
   right: 5px;
   top: 0;
@@ -133,12 +142,11 @@ body {
   display: flex;
 }
 
-
 .clear-button:hover {
   color: rgba(0, 0, 0, 0.6);
 }
-#reset-button{
+#reset-button {
   border-radius: 30%;
   color: rgba(0, 0, 0, 0.6);
-  background-color:rgba(186, 63, 29, 0.667)
+  background-color: rgba(186, 63, 29, 0.667);
 }
