@@ -372,6 +372,7 @@ function addressAutocomplete(containerElement, callback, options) {
 //ROUTING FEATURE, ADDS ROUTES BETWEEN TWO DESTINATION ON AN ICON DOUBLE CLICK 
 
 //MAKE API CALL FOR ROUTE source:https://apidocs.geoapify.com/docs/routing/#code-samples
+
 async function getRoutingResultsGeo(destinationData,userLocationData)
 {
     var fromWaypoint = [userLocationData.lat, userLocationData.lon]; // latutude, longitude
