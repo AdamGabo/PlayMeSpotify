@@ -86,24 +86,3 @@ getLocation();
 //
 
 //
-//
-async function updatePodcastDisplay(e) {
-  var optionSelected = e.target;
-  if (optionSelected.matches(".result")) {
-    htmlSkeletonPodcast();
-    let podcastId = optionSelected.dataset.podcastId;
-    console.log("do something with the podcast ID to display it");
-    clearSearchResult();
-  }
-}
-//
-//
-
-function playSelectedEpisode(e) {
-  var optionSelected = e.target;
-  if (optionSelected.matches(".result")) {
-    let audioURL = optionSelected.dataset.audiourl;
-    renderAudioPlayer(audioURL, "");
-    clearSearchResult();
-  }
-}
