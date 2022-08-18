@@ -1,9 +1,9 @@
 /* General styles */
 html {
   background: #d1e0e6;
+  font-size: 16px;
 }
 body {
-  font: 16px;
   background: #d1e0e6;
 }
 
@@ -13,7 +13,7 @@ body {
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: #181818;
+  background-color: #c4dce6;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -28,14 +28,49 @@ body {
 .audioImage1248 {
   margin-right: 10px;
   border-radius: 5px;
-  height: 5vw;
+  height: 8vw;
+  width: 16vw;
 }
 audio {
   width: 70vw;
 }
 
 audio::-webkit-media-controls-panel {
-  background-color: blanchedalmond;
+  background-color: #72a7d3;
+}
+
+.dropdown {
+  cursor: pointer;
+  font-size: 1.5rem;
+  background-color: lightgray;
+  padding: 30px 30px 10px 0;
+  width: 100%;
+}
+
+.dropdown:hover {
+  background-color: gray;
+}
+
+#podImg {
+  display: flex;
+  justify-content: center;
+}
+
+.podImage {
+  width: 250px;
+}
+
+.centre1248 {
+  display: flex;
+  align-items: center;
+}
+
+.playBtn {
+  cursor: pointer;
+}
+
+.margin1248 {
+  margin-bottom: 7vw;
 }
 
 /* 

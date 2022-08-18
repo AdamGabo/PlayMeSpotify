@@ -71,12 +71,33 @@ function renderSearchResult(json, type, dropdownContainerEl) {
   if (type === "podcast") {
     resultEl.setAttribute("data-podcastid", `${data.podcastId}`);
     resultEl.innerHTML = `
-    <span>podcast Thumbnail:- </span>
-    <img width="150px" height="150px" src=${data.podcastThumbnail}>
-    <span>Podcast title:- ${data.podcastTitle}</span>
-    <span>Podcast Listen Score:- ${data.podcastListenScore}</span>
-    <span>Podcast Publisher:- ${data.podcastPublisher}</span>
-    <span>Podcast Global Rank:- ${data.podcastGlobalRank}</span>
+    <article class="media">
+    <figure class="media-left">
+        <p class="image is-64x64">
+            <img width="150px" height="150px" src=${data.podcastThumbnail}>
+        </p>
+    </figure>
+    <div class="media-content">
+        <div class="content">
+            <p>
+                <strong>${data.podcastTitle}</strong>
+            </p>
+        </div>
+        <div class="level is-mobile">
+            <div class="level-right">
+                <span class="level-item">
+                    <span>Listen Score:- ${data.podcastListenScore}</span>
+                </span>
+                <span class="level-item">
+                    <span>Publisher:- ${data.podcastPublisher}</span>
+                </span>
+                <span class="level-item">
+                    <span>Global Rank:- ${data.podcastGlobalRank}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</article>
   `;
     dropdownContainerEl.appendChild(resultEl);
     dropdownContainerEl.addEventListener("click", updatePodcastDisplay);
@@ -122,14 +143,27 @@ async function getPodcastDetails(podcastId, nextEpDate = "") {
 function renderPodcastDisplay(json) {
   document.getElementById("podInfo").innerHTML = `
   <article class="podInfo" >
-    <h2>Description</h2>
-    <p>${json.description}</p>
-<h2>Country</h2>
-<p>${json.country}</p>
-<h2>Publiser</h2>
-<p>${json.publisher}</p>
-<h2>Total Episodes</h2>
-<p>${json.total_episodes}</p>
+    <h2 class="text is-size-5-mobile is-size-4-touch is-size-3-tablet has-text-weight-bold">Description</h2>
+    <p class="text is-size-6-mobile is-size-5-touch is-size-4-tablet">${json.description}</p>
+    <div class="level is-mobile">
+    <div class="level-right py-3">
+        <span class="level-item">
+            <h2 class="has-text-weight-bold">
+                Country: </h2>
+            <p class="text has-text-weight-bold">${json.country}</p>
+        </span>
+        <span class="level-item">
+            <h2 class=" has-text-weight-bold">
+                Publisher: </h2>
+            <p class="text has-text-weight-bold">${json.publisher}</p>
+        </span>
+        <span class="level-item">
+            <h2 class=" has-text-weight-bold">
+                Total Episodes: </h2>
+            <p class="text has-text-weight-bold">${json.total_episodes}</p>
+        </span>
+    </div>
+</div>
 </article>
   `;
   let imageContainer = document.getElementById("podImg");
@@ -148,15 +182,18 @@ function renderEpisodeList(json) {
     let formattedLength = moment
       .utc(1000 * episode.audio_length_sec)
       .format("HH:mm:ss");
+    var dateString = moment.unix(episode.pub_date_ms).format("MM/DD/YYYY");
     let episodeLiEl = document.createElement("li");
-    episodeLiEl.setAttribute("class", "");
+    episodeLiEl.setAttribute(
+      "class",
+      "notification is-info is-light columns is-right"
+    );
 
     episodeLiEl.innerHTML = `
-    <img class="playBtn" data-audiourl="${episode.audio}" data-thumbnailurl="${episode.thumbnail}" src="./assets/image1/play-button-icon-png-18905.png" alt="">
-    <span>Title:->${episode.title}</span>
-    <img src="${episode.image}" alt=""> 
-    <span><h3>Description</h3>${episode.description}</span>
-    <span><h3>Episode Length</h3>${formattedLength}</span>
+    <img class="playBtn column is-1" data-audiourl="${episode.audio}" data-thumbnailurl="${episode.thumbnail}" src="./assets/image1/play (1).png" alt="">
+    <span class="column centre1248">${episode.title}</span>
+    <span class="column is-2 centre1248">Episode Date<br>${dateString}</span>
+    <span class="column is-2 centre1248">${formattedLength}</span>
 `;
     epListContainer.appendChild(episodeLiEl);
   });
@@ -206,16 +243,24 @@ function htmlSkeletonPodcast() {
   wrapperContainerEl.innerHTML = `
   <section>
   <!-- container to display the data for a particular podcast-->
-  <h1 id="podTitle"></h1>
+  <div class="columns pt-3">
+                    
+  <aside class="column is-2" id="podImg">
+  <!-- container for Podcast image-->
+
+      
+  </aside>
+  <h1 class="column is-10 text is-size-7-mobile is-size-3-touch is-size-1-tablet has-text-weight-bold " id="podTitle">
+  </h1>
+
+</div>
+
   <section id="podInfo">
       <!-- container for podcast description -->
 
   </section>
   
-  <aside id="podImg">
-      <!-- container for Podcast image-->
-
-  </aside>
+ 
   <section >
       <!-- container for episode lists -->
       <ul id="epList">
