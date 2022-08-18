@@ -191,7 +191,7 @@ function renderEpisodeList(json) {
 
     episodeLiEl.innerHTML = `
     <img class="playBtn column is-1" data-audiourl="${episode.audio}" data-thumbnailurl="${episode.thumbnail}" src="./assets/image1/play (1).png" alt="">
-    <span class="column centre1248">${episode.title}</span>
+    <span class="column centre1248 is-size-3">${episode.title}</span>
     <span class="column is-2 centre1248">Episode Date<br>${dateString}</span>
     <span class="column is-2 centre1248">${formattedLength}</span>
 `;
