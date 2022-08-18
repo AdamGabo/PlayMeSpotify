@@ -47,9 +47,13 @@ APIs include:
 Features: 
 * Search bar that autofills address location 
 * Marker locaters, when clicked they show the address
+* Routing between address and destination (when the user double clicks the park icon)
 * Local storage which remembers the last location
 * Map re-positions itself based off of user selection
-* Routing between address and destination (when the user double clicks the park icon)
+* Search for a Podcast 
+* get a dropdown menu with related search items
+* once a search item selected, the podcast details will come with a list of episodes
+* press the play button to listen to an episode
 
 ## Design
 CSS design features include: 
