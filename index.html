@@ -16,30 +16,52 @@
 </head>
 
 <body>
-    <div class="autocomplete-container" id="autocomplete-container"></div>
-    <button id="reset-button" type="button">Reset</button>
-    <div id="my-map"></div>
 
-    <header class="jumbotron">
-        <h1 class="title">Podcast Finder</h1>
-        <p class="lead">Find any podcast on the Web! With Podcast Finder</p>
-    </header>
-    <div>
-        <form class="search-form">
-            <input id="searchInput" type="text" placeholder="Search.." name="search">
-            <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
-        </form>
-        <div>
-            <ul id="searchResults" class="">
-            </ul>
+    <section class="hero is-info is-small">
+        <div class="hero-body">
+
+            <p class="title">
+                Fullheight hero
+            </p>
+            <p class="subtitle">
+                Fullheight subtitle
+            </p>
+
+        </div>
+    </section>
+    <div class="container is-fluid">
+        <div class="columns">
+
+            <div class="column">
+                <header class="jumbotron">
+                    <h1 class="title">Podcast Finder</h1>
+                    <p class="lead">Find any podcast on the Web! With Podcast Finder</p>
+                </header>
+                <div>
+                    <form class="search-form">
+                        <input id="searchInput" type="text" placeholder="Search.." name="search">
+                        <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                    <div>
+                        <ul id="searchResults" class="">
+                        </ul>
+                    </div>
+                </div>
+                <main class="">
+                    <!-- All content goes here via Javacript-->
+                    <div id="podcastDisplay"></div>
+                    <div id="audioPlayerContainer"></div>
+                </main>
+            </div>
+
+            <div class="column">
+                <div class="autocomplete-container" id="autocomplete-container"></div>
+                <button id="reset-button" type="button">Reset</button>
+                <div id="my-map"></div>
+            </div>
+
         </div>
     </div>
-    <main class="container">
-        <!-- All content goes here via Javacript-->
-        <div id="podcastDisplay"></div>
-        <div id="audioPlayerContainer"></div>
-    </main>
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

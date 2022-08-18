@@ -1,4 +1,7 @@
 /* General styles */
+html {
+  background: #d1e0e6;
+}
 body {
   font: 16px;
   background: #d1e0e6;
