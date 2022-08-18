@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style1248.css">
+
+    <title>Podcast Finder</title>
+</head>
+
+<body>
+
+    <section class="hero is-info is-small">
+        <div class="hero-body">
+
+            <p class="title">
+                Pods and Parks
+            </p>
+            <p class="subtitle">
+                A place where you can listen to podcasts while you complete that
+            </p>
+
+        </div>
+    </section>
+    <div class="container is-fluid ">
+
+        
+
+            <div class="section">
+                <h1 class="title has-text-centered">Find A Trail!</h1>
+                <div class="autocomplete-container" id="autocomplete-container"></div>
+                <button id="reset-button" type="button">Reset</button>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-half is-offset-one-quarter">
+                    <div id="my-map"></div>
+                </div>
+            </div>
+
+
+
+            <div class="section">
+                <header class="jumbotron">
+                    <h1 class="title has-text-centered">Podcast Finder</h1>
+                    <p class="lead has-text-centered">Find any podcast on the Web! With Podcast Finder</p>
+                </header>
+                <div>
+                    <form class="search-form">
+                        <input id="searchInput" type="text" placeholder="Search.." name="search">
+                        <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                    <div>
+                        <ul id="searchResults" class="">
+                        </ul>
+                    </div>
+                </div>
+                <main class="">
+                    <!-- All content goes here via Javacript-->
+                    <div id="podcastDisplay" class="margin1248"></div>
+                    <div id="audioPlayerContainer"></div>
+                </main>
+            </div>
+
+        
+
+
+        
+      
+
+
+
+
+
+
+    </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
+    <!-- Function.js contains all the function definitions-->
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/test.js"></script>
+    <!-- Test.js is to be used for testing functions we will remove this before deploying the website-->
+    <script src="./assets/js/testGeo.js"></script>
+
+
+</body>
+
+</html>

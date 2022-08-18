@@ -1,0 +1,25 @@
+img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container1248{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+   height: 100vh;
+   width: 100vw;
+   background-color: #3e8ed0;
+}
+
+.col1248{
+    width: 50vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+   
+}
