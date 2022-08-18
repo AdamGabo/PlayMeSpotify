@@ -6,64 +6,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="./assets/css/reset.css">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css"
-        integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/test.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kimeiga/bahunya/dist/bahunya.min.css">
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style1248.css">
 
-    <style id="compiled-css" type="text/css">
-        html,
-        body,
-        #my-map {
-            width: 100%;
-            height: 80%;
-            margin: 0;
-        }
-    </style>
     <title>Podcast Finder</title>
 </head>
 
-<body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
+<body>
     <div class="autocomplete-container" id="autocomplete-container"></div>
     <button id="reset-button" type="button">Reset</button>
     <div id="my-map"></div>
 
     <header class="jumbotron">
         <h1 class="title">Podcast Finder</h1>
-
         <p class="lead">Find any podcast on the Web! With Podcast Finder</p>
     </header>
     <div>
         <form class="search-form">
             <input id="searchInput" type="text" placeholder="Search.." name="search">
-
             <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
         </form>
         <div>
-            <ul id="searchResults" class="hidden">
-
-
+            <ul id="searchResults" class="">
             </ul>
         </div>
     </div>
     <main class="container">
         <!-- All content goes here via Javacript-->
-
-        <div id="podcastDisplay">
-
-        </div>
-
-
-
+        <div id="podcastDisplay"></div>
+        <div id="audioPlayerContainer"></div>
     </main>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -71,8 +48,9 @@
     <!-- Function.js contains all the function definitions-->
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/test.js"></script>
-    <script src="./assets/js/testGeo.js"></script>
     <!-- Test.js is to be used for testing functions we will remove this before deploying the website-->
+    <script src="./assets/js/testGeo.js"></script>
+
 
 </body>
 

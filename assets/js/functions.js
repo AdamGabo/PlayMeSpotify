@@ -2,14 +2,20 @@
 // Input : 1. Source = A url to the audio file to be loaded. 2. class = The class you want to give to the audio element  3. An element in which to append this player.
 // output : 2. The function will append the audio tag in the element passed as parameter.
 
-function renderAudioPlayer(src, clas = "") {
+function renderAudioPlayer(src, thumbnail, clas = "") {
   let audioContainerEl = document.getElementById("audioPlayerContainer");
   audioContainerEl.innerText = "";
+  let imgContainer = document.createElement("div");
+
+  imgContainer.innerHTML = `<img class="audioImage1248" src="${thumbnail}" alt="">`;
+  // imgContainer.classList = "audioThumbnail1248";
   let player = document.createElement("AUDIO");
   player.src = src;
   player.classList = clas;
   player.controls = "controls";
+  player.autoplay = "autoplay";
   player.prelaod = "metadata";
+  audioContainerEl.appendChild(imgContainer);
   audioContainerEl.appendChild(player);
 }
 
@@ -146,7 +152,7 @@ function renderEpisodeList(json) {
     episodeLiEl.setAttribute("class", "");
 
     episodeLiEl.innerHTML = `
-    <img class="playBtn" data-audiourl="${episode.audio}" src="./assets/image1/play-button-icon-png-18905.png" alt="">
+    <img class="playBtn" data-audiourl="${episode.audio}" data-thumbnailurl="${episode.thumbnail}" src="./assets/image1/play-button-icon-png-18905.png" alt="">
     <span>Title:->${episode.title}</span>
     <img src="${episode.image}" alt=""> 
     <span><h3>Description</h3>${episode.description}</span>
@@ -162,7 +168,8 @@ function playEpisode(e) {
   if (optionSelected.matches(".playBtn")) {
     console.log("audio Played");
     let audioUrl = optionSelected.dataset.audiourl;
-    renderAudioPlayer(audioUrl);
+    let imageUrl = optionSelected.dataset.thumbnailurl;
+    renderAudioPlayer(audioUrl, imageUrl);
   }
 }
 // Need to add comments------
