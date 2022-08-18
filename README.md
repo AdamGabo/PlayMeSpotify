@@ -1,5 +1,5 @@
 
-# Group One - Podcast Finder
+# Group One - Pods and Parks
 
 ## Contents of this File 
 ---------------------
