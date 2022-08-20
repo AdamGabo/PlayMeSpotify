@@ -69,7 +69,7 @@ async function getSearchResultGeo(long, lat)
             url: `https://api.geoapify.com/v2/places?categories=leisure.park&conditions=named&filter=circle:${long},${lat},5000&bias=proximity:${long},${lat}&lang=en&limit=20&apiKey=1072fcb061a849c28775a0714807e737`,
             type: "GET", 
             success: function (result) {
-                console.log(result);
+                
                 results = result; 
                 displayMarkers(results);
             }, 

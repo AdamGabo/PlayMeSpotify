@@ -49,15 +49,17 @@ async function getSearchResult(
 ) {
   input = encodeURI(input);
   let url = `${proxyUrl}${baseUrl}search?q=${input}&type=${type}&offset=${offset}&len_max=${len_max}&published_before=${published_before}published_after=${published_after}&only_in=title%2Cdescription%2Cauthordescription&language=English&safe_mode=0`;
-
+  let searchResultContainerEl = document.getElementById("searchResults");
+  displayLoading(searchResultContainerEl);
   let response = await fetch(url);
   let json = await response.json();
   let resultsArr = json.results;
-
-  let searchResultContainerEl = document.getElementById("searchResults");
-  resultsArr.forEach((result) => {
-    renderSearchResult(result, type, searchResultContainerEl);
-  });
+  setTimeout(() => {
+    searchResultContainerEl.innerHTML = "";
+    resultsArr.forEach((result) => {
+      renderSearchResult(result, type, searchResultContainerEl);
+    });
+  }, 500);
 }
 
 // Need to add comments-------
@@ -71,7 +73,7 @@ function renderSearchResult(json, type, dropdownContainerEl) {
   if (type === "podcast") {
     resultEl.setAttribute("data-podcastid", `${data.podcastId}`);
     resultEl.innerHTML = `
-    <article class="media">
+    <article class="media removeClick1248">
     <figure class="media-left">
         <p class="image is-64x64">
             <img width="150px" height="150px" src=${data.podcastThumbnail}>
@@ -83,7 +85,7 @@ function renderSearchResult(json, type, dropdownContainerEl) {
                 <strong>${data.podcastTitle}</strong>
             </p>
         </div>
-        <div class="level is-mobile">
+        <div class="level ">
             <div class="level-right">
                 <span class="level-item">
                     <span>Listen Score:- ${data.podcastListenScore}</span>
@@ -145,7 +147,7 @@ function renderPodcastDisplay(json) {
   <article class="podInfo" >
     <h2 class="text is-size-5-mobile is-size-4-touch is-size-3-tablet has-text-weight-bold">Description</h2>
     <p class="text is-size-6-mobile is-size-5-touch is-size-4-tablet">${json.description}</p>
-    <div class="level is-mobile">
+    <div class="level ">
     <div class="level-right py-3">
         <span class="level-item">
             <h2 class="has-text-weight-bold">
@@ -177,7 +179,6 @@ function renderEpisodeList(json) {
   let epListContainer = document.getElementById("epList");
   let episodeListArr = json.episodes;
 
-  console.log("use this to render episodes list", episodeListArr);
   episodeListArr.forEach((episode) => {
     let formattedLength = moment
       .utc(1000 * episode.audio_length_sec)
@@ -273,3 +274,40 @@ function htmlSkeletonPodcast() {
 //
 // END Functions to set html skeleton
 //
+
+//
+// animations
+//
+function mainPage(e) {
+  e.preventDefault();
+  let containerEl = document.getElementById("main1");
+  displayLoading(containerEl);
+  setTimeout(() => {
+    window.location.href = "./mainPage.html";
+  }, 4050);
+}
+
+function displayLoading(containerEl) {
+  containerEl.innerHTML = `
+<div class="loadingcontainer">
+      <div class="groovyLoader">
+          <div>
+              <div>
+                  <div>
+                      <div>
+                          <div>
+                              <div>
+                                  <div>
+                               
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+`;
+}
