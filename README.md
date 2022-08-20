@@ -57,6 +57,7 @@ Features:
 
 ## Design
 CSS design features include: 
+* laoding animation inspiration from https://codepen.io/PullJosh/pen/MdMpxV
 
 ## Website-Details
 * Please use the following link to navigate to the deployed website:https://adamgabo.github.io/PlayMeSpotify/
